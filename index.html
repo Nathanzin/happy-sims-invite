@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite - Festa Incrível</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <img src="img/plumbob.gif" alt="Plumbob" class="plumbob">
+        <h1>🎉 Festa da Letícia 🎉</h1>
+        <p class="intro">
+            A diversão já está sendo planejada, e só falta você para completar essa celebração! Será uma noite cheia de boas risadas, momentos inesquecíveis e surpresas pelo caminho.
+        </p>
+        <div class="details">
+            <p>📅 <strong>Data:</strong> [Insira a data]</p>
+            <p>📍 <strong>Local:</strong> [Insira o local]</p>
+            <p>⏳ <strong>Hora:</strong> [Insira o horário]</p>
+        </div>
+        <p class="closing">
+            Tudo está pronto para um evento épico, e garantimos que ninguém ficará de fora da diversão (ou preso em alguma situação inesperada... 😏).
+        </p>
+        <p class="cta">Agora só falta você confirmar:</p>
+        <div class="buttons">
+            <button class="accept" onclick="sendResponse('Aceitou')">✅ Aceitar convite</button>
+            <button class="decline" onclick="sendResponse('Recusou')">❌ Recusar convite</button>
+        </div>
+        <h3><p id="confirmation-message" class="hidden">🎉 Nos vemos na festa! 🎉</p</h3>
+        
+        <div class="qr-container">
+            <p>📲 Escaneie o QR Code para acessar o convite:</p>
+            <canvas id="qrcode"></canvas>
+        </div>
+    </div>
+
+    <script>
+        function sendResponse(choice) {
+            fetch("https://formspree.io/f/{SEU_FORM_ID}", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ resposta: choice })
+            }).then(() => {
+                document.getElementById("confirmation-message").classList.remove("hidden");
+            }).catch(() => {
+                alert("Ocorreu um erro. Tente novamente.");
+            });
+        }
+
+        function applyDarkMode() {
+            const hour = new Date().getHours();
+            if (hour >= 18 || hour < 6) {
+                document.body.classList.add("dark-mode");
+            }
+        }
+        applyDarkMode();
+
+        var qr = new QRious({
+            element: document.getElementById('qrcode'),
+            value: window.location.href,
+            size: 150
+        });
+    </script>
+</body>
+</html>
